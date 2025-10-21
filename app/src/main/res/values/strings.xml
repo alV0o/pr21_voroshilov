@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">pr21_voroshilov</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="input_email">Введите электронную почту</string>
+    <string name="input_password">Введите пароль</string>
+    <string name="enter">Войти</string>
+    <string name="name_list">Название дела</string>
+    <string name="choose_time">Выберите время</string>
+    <string name="save">Запланировать</string>
+    <string name="move">Перейти</string>
+    <string name="important">Важное</string>
+    <string name="category">Выберите категорию</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string-array name="categories">
+        <item>Дом</item>
+        <item>Работа</item>
+        <item>Развлечения</item>
+    </string-array>
+</resources>
