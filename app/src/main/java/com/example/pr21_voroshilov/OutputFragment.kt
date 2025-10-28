@@ -1,5 +1,7 @@
 package com.example.pr21_voroshilov
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,17 +11,20 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.w3c.dom.Text
+import java.util.ArrayList
 
-class OutputFragment(val list: ArrayList<CaseClass>) : Fragment() {
+class OutputFragment : Fragment() {
 
-    lateinit var spinnerCases: Spinner
-    lateinit var name:TextView
-    lateinit var date:TextView
-    lateinit var category: TextView
-    lateinit var important: TextView
-    lateinit var time:TextView
+    lateinit var rcView: RecyclerView
+    lateinit var adapter: CaseAdapter
+    lateinit var pref:SharedPreferences
+    lateinit var backButton: AppCompatButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,42 +36,27 @@ class OutputFragment(val list: ArrayList<CaseClass>) : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_output, container, false)
+        pref = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        backButton = view.findViewById(R.id.back_btn)
 
-        name = view.findViewById(R.id.name)
-        date = view.findViewById(R.id.date)
-        category = view.findViewById(R.id.category)
-        important = view.findViewById(R.id.important)
-        spinnerCases = view.findViewById(R.id.spinner_cases)
-        time = view.findViewById(R.id.time)
+        val textJsonList = "${pref.getString("email","")}_list"
 
-        val list2 = arrayListOf<String>()
+        val jsonGet = pref.getString(textJsonList, "")
+        val listcases = Gson().fromJson<ArrayList<CaseClass>>(jsonGet, object : TypeToken<List<CaseClass>>() {}.type )
 
-        var i = 0
-        while( i < list.size){
-            list2.add(list[i].name)
-            i++
+        adapter = CaseAdapter(listcases)
+
+        rcView = view.findViewById(R.id.recyclerView)
+
+        rcView.adapter = adapter
+
+        backButton.setOnClickListener {
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, InputFragment())
+                .commit()
         }
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, list2)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerCases.adapter = adapter
-
-        spinnerCases.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ){
-                name.text = list[position].name
-                date.text = list[position].date.toString()
-                category.text = list[position].category
-                time.text = "${list[position].time.hour} ${list[position].time.minute}"
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
-        }
 
         return view
     }

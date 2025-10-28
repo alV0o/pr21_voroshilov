@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.pr21_voroshilov"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.pr21_voroshilov"
         minSdk = 28
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -33,10 +33,15 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    viewBinding{
+        enable = true
+    }
 }
 
 dependencies {
-    
+
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation("com.google.code.gson:gson:2.10")
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")

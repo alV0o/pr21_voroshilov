@@ -17,4 +17,8 @@
         <item>Работа</item>
         <item>Развлечения</item>
     </string-array>
+    <string name="back">Back</string>
+    <string name="message_reg">Поля не должны быть пустые!</string>
+    <string name="tasks">Дела</string>
+    <string name="message_reg_task">Выберите все данные и заполните поля!</string>
 </resources>

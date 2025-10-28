@@ -1,5 +1,7 @@
 package com.example.pr21_voroshilov
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.icu.text.DateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,7 +22,11 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.util.Calendar
+import kotlin.collections.ArrayList
 
 class InputFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +44,8 @@ class InputFragment : Fragment() {
     lateinit var inputName:EditText
     lateinit var checkBox: CheckBox
     lateinit var category: AppCompatSpinner
+    lateinit var pref: SharedPreferences
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,25 +66,51 @@ class InputFragment : Fragment() {
         inputName = view.findViewById(R.id.input_name)
         checkBox = view.findViewById(R.id.checkBox)
         category = view.findViewById(R.id.category)
-        val class_cases = arrayListOf<CaseClass>()
+
+        pref = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
+        val textJsonList = "${pref.getString("email","")}_list"
+
+        val jsonGet = pref.getString(textJsonList, "") ?: ""
+        var listcases = arrayListOf<CaseClass>()
+        if (jsonGet.isNotEmpty()) listcases = Gson().fromJson(jsonGet, object : TypeToken<List<CaseClass>>() {}.type ) ?: arrayListOf()
 
         val adapter = ArrayAdapter.createFromResource(requireContext(), R.array.categories, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
+        var dateText = ""
+
+        calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            dateText = "${dayOfMonth}.${month}.${year}"
+        }
+
         saveButton.setOnClickListener {
-            val dateInMill = calendar.date
 
-            val calendar1 = Calendar.getInstance()
-            calendar1.timeInMillis = dateInMill
+            val timeText = "${timepicker.hour}:${timepicker.minute}"
 
-
-            class_cases.add(CaseClass(inputName.text.toString(), calendar1.time, timepicker, checkBox.isChecked, category.selectedItem.toString()))
+            if (inputName.text.toString().isNotEmpty() && dateText.isNotEmpty() && timeText.isNotEmpty()) {
+                val case = CaseClass(
+                    inputName.text.toString(),
+                    dateText,
+                    timeText,
+                    checkBox.isChecked,
+                    category.selectedItem.toString()
+                )
+                listcases.add(case)
+            }
+            else{
+                Snackbar.make(view, R.string.message_reg_task, Snackbar.LENGTH_LONG).show()
+            }
         }
 
         moveButton.setOnClickListener {
+
+            val json = Gson().toJson(listcases)
+            pref.edit().putString(textJsonList, json).apply()
+
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, OutputFragment(class_cases))
+                .replace(R.id.fragment_container, OutputFragment())
                 .commit()
         }
 

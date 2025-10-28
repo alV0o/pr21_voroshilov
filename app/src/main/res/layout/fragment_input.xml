@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InputFragment">
+    tools:context=".InputFragment"
+    android:background="@color/dark_gray">
 
     <EditText
         android:id="@+id/input_name"
@@ -14,13 +15,17 @@
         android:hint="@string/name_list"
         android:inputType="text"
         android:textSize="22sp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/bg_item"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/dark_white"/>
 
 
     <LinearLayout
@@ -38,6 +43,8 @@
             android:layout_height="wrap_content"
             android:text="@string/date"
             android:textAllCaps="false"
+            android:background="@drawable/button_white_left"
+            android:textColor="@color/black"
             />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -45,7 +52,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/time"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:background="@drawable/button_white_right"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
     <CalendarView
@@ -54,9 +63,12 @@
         android:layout_height="300dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:background="@drawable/bg_item"
+        />
 
     <TimePicker
         android:id="@+id/timepicker"
@@ -68,7 +80,9 @@
         app:layout_constraintBottom_toTopOf="@+id/mainTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:background="@drawable/bg_item"
+        />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -78,7 +92,8 @@
         android:text="@string/important"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/mainTextView"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/mainTextView"
@@ -89,16 +104,19 @@
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendar"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        android:textColor="@color/white"/>
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/mainTextView"
-        app:layout_constraintTop_toTopOf="@+id/mainTextView" />
+        app:layout_constraintTop_toTopOf="@+id/mainTextView"
+        />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/bg_item"
         android:id="@+id/save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,7 +127,8 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        android:textColor="@color/white"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/move_button"
@@ -123,5 +142,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/move"
             android:textSize="20sp"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:background="@drawable/bg_item"
+            android:textColor="@color/white"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
