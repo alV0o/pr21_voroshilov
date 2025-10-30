@@ -25,7 +25,9 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.time.LocalDate
 import java.util.Calendar
+import java.util.Date
 import kotlin.collections.ArrayList
 
 class InputFragment : Fragment() {
@@ -82,22 +84,45 @@ class InputFragment : Fragment() {
         var dateText = ""
 
         calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            dateText = "${dayOfMonth}.${month}.${year}"
+
+            val date= LocalDate.of(year, month+1, dayOfMonth)
+
+            if (LocalDate.now() > date){
+                Snackbar.make(view, R.string.message_incorrect_date, Snackbar.LENGTH_LONG).show()
+                dateText = ""
+            }
+            else {
+                dateText = "${dayOfMonth}.${month+1}.${year}"
+            }
         }
 
         saveButton.setOnClickListener {
 
             val timeText = "${timepicker.hour}:${timepicker.minute}"
 
-            if (inputName.text.toString().isNotEmpty() && dateText.isNotEmpty() && timeText.isNotEmpty()) {
+            if (inputName.text.toString().trim().isNotEmpty() && dateText.trim().isNotEmpty() && timeText.isNotEmpty()) {
                 val case = CaseClass(
-                    inputName.text.toString(),
+                    inputName.text.toString().trim(),
                     dateText,
                     timeText,
                     checkBox.isChecked,
                     category.selectedItem.toString()
                 )
-                listcases.add(case)
+                if (listcases.size > 0) {
+                    var newCase = true
+                    for (i in 0..listcases.size - 1) {
+                        if (listcases[i].name == case.name) {
+                            Snackbar.make(view, R.string.message_error_name, Snackbar.LENGTH_LONG)
+                                .show()
+                            newCase = false
+                            break
+                        }
+                    }
+                    if (newCase) {
+                        listcases.add(case)
+                    }
+                }
+                else listcases.add(case)
             }
             else{
                 Snackbar.make(view, R.string.message_reg_task, Snackbar.LENGTH_LONG).show()

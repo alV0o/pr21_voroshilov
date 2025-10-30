@@ -21,4 +21,6 @@
     <string name="message_reg">Поля не должны быть пустые!</string>
     <string name="tasks">Дела</string>
     <string name="message_reg_task">Выберите все данные и заполните поля!</string>
+    <string name="message_error_name">Такое имя уже занято!</string>
+    <string name="message_incorrect_date">Выбрана неверная дата</string>
 </resources>
